@@ -1,0 +1,419 @@
+# Prompt Antigravity — Implementasi Logic Modul Manajemen Data Pengguna
+
+## 1. Role dan Objective
+
+Act as a senior full-stack developer specializing in React.js, REST APIs, database integration, authentication, and role-based access control.
+
+Implement the complete business logic for the **Manajemen Data Pengguna** module in the existing Marmut Project application.
+
+Use the attached screenshot as the primary UI reference. The screenshot contains two pages:
+
+1. **Data Pengguna** — a user management table.
+2. **Tambah Pengguna** — a form to create a new user.
+
+Your task is to make both pages fully functional while preserving the existing UI design, styling, layout, navigation, and reusable components.
+
+**Important:** Do not rebuild the application from scratch. Inspect the existing project, identify its frontend and backend architecture, and integrate the implementation into the current codebase.
+
+## 2. Inspect the Existing Project First
+
+Before writing code:
+
+1. Inspect the project folder structure.
+2. Identify the frontend framework, routing configuration, and styling approach.
+3. Inspect the existing backend framework, API endpoints, database configuration, models, migrations, and authentication mechanism.
+4. Identify the existing user table and its fields.
+5. Check whether login sessions or authenticated user information are already available.
+6. Review the existing sidebar and shared layout components.
+7. Reuse existing components, services, utilities, and conventions whenever possible.
+
+Do not create a second database connection, duplicate user tables, or introduce a new authentication system if one already exists.
+
+If the project uses Laravel for the backend and React.js for the frontend, maintain that architecture and integrate through the existing API or established communication mechanism.
+
+## 3. Module Overview
+
+The module must support the following features:
+
+- Display a list of users.
+- Search users by name or email.
+- Display user roles.
+- Add a new user.
+- Edit an existing user.
+- Delete a user with confirmation.
+- Validate user input.
+- Display success and error notifications.
+- Support pagination when needed.
+- Enforce role-based permissions.
+- Persist changes to the existing database when backend integration is available.
+
+The module must not rely solely on hardcoded mock data for CRUD operations if the project already has a functioning backend.
+
+## 4. Page: Data Pengguna
+
+Follow the attached screenshot.
+
+### A. Load User Data
+
+Retrieve users from the existing backend and display them in the user table.
+
+The table columns are:
+
+| Column | Description |
+|---|---|
+| No | Sequential row number |
+| Nama | Full name of the user |
+| Email | User email address |
+| Role | User role, displayed as a badge |
+| Aksi | Edit and delete actions |
+
+Display the following roles with visually distinct badges:
+
+- Superadmin
+- Administrator
+- Kasir
+
+Use the project's existing role definitions if they differ from these labels.
+
+Requirements:
+
+- Show a loading indicator while retrieving data.
+- Display an empty state if no users exist.
+- Display a clear error message if loading fails.
+- Do not expose password hashes or other sensitive user fields in the response.
+- Use the correct row numbering when pagination is enabled.
+- Ensure the displayed data reflects the latest database state.
+
+### B. Search Users
+
+Implement the search input shown above the table.
+
+Search behavior:
+
+- Search by full name.
+- Search by email.
+- Ignore leading and trailing whitespace.
+- Make matching case-insensitive.
+- Update the displayed results as the user types, with a short debounce if the search is server-side.
+- Reset the current page when the search query changes.
+- Display an appropriate empty state when no results match.
+
+If the backend already supports server-side searching, use the existing endpoint instead of downloading all users unnecessarily.
+
+### C. Add User Button
+
+When the user clicks **Tambah Pengguna**, navigate to the user creation page.
+
+Use the existing routing conventions. For example:
+
+- `/users`
+- `/users/create`
+
+Do not introduce duplicate routes if equivalent routes already exist.
+
+### D. Edit User Button
+
+When the user clicks **Ubah**:
+
+1. Open the existing edit page or form according to the application's current architecture.
+2. Retrieve the selected user's information.
+3. Populate the form with the existing name, email, and role.
+4. Allow the user to update editable fields.
+5. Submit the changes to the backend.
+6. Refresh or update the table after a successful save.
+7. Display success or error feedback.
+
+Do not allow a user's password to be overwritten with an empty string when editing their profile.
+
+For password updates, use an optional password field or a separate password-change mechanism, depending on the existing application design.
+
+### E. Delete User Button
+
+When the user clicks **Hapus**, display a confirmation dialog before deleting the user.
+
+The dialog should identify the user being deleted and provide two actions:
+
+- Batal
+- Hapus
+
+Deletion logic:
+
+1. If the user cancels, do not change any data.
+2. If confirmed, send the delete request to the backend.
+3. Remove the user from the table only after successful deletion.
+4. Display a success notification.
+5. Display an appropriate error if deletion fails.
+6. Prevent repeated submissions while deletion is in progress.
+
+Apply these safeguards:
+
+- Prevent a user from deleting their own account if the application requires this restriction.
+- Prevent unauthorized users from deleting accounts.
+- Protect the last active Superadmin account from deletion.
+- Respect existing database constraints and relationships.
+
+The backend must enforce these restrictions; frontend checks alone are insufficient.
+
+## 5. Page: Tambah Pengguna
+
+Recreate the form shown in the attached screenshot.
+
+### A. Form Fields
+
+**1. Nama Lengkap**
+
+- Required.
+- Must not be empty or consist only of whitespace.
+- Trim unnecessary leading and trailing spaces.
+- Apply the existing database's maximum length.
+
+**2. Email**
+
+- Required.
+- Must be a valid email address.
+- Must be unique among users.
+- Normalize whitespace and follow the project's existing email normalization rules.
+- If the email already exists, display a useful validation message.
+
+**3. Password**
+
+- Required when creating a new user.
+- Use a password input type.
+- Provide a show/hide password toggle.
+- Apply the existing password security policy.
+- Never log, expose, or store plaintext passwords.
+- Send passwords securely over HTTPS in production.
+
+**4. Role**
+
+- Required.
+- Use a dropdown containing the roles permitted for the current administrator.
+- Show the available roles consistently with the screenshot.
+- Prevent users from assigning roles they are not authorized to manage.
+
+Do not trust a role value submitted by the browser. Validate authorization on the backend.
+
+### B. Save Button
+
+When the user clicks **Simpan**:
+
+1. Validate all required fields.
+2. Display inline validation messages for invalid fields.
+3. Prevent duplicate submissions while the request is processing.
+4. Submit the user data to the backend.
+5. Hash the password on the backend using the framework's secure password hashing mechanism.
+6. Store the user in the existing database.
+7. Return a success response without exposing sensitive information.
+8. Display a success notification.
+9. Redirect to the Data Pengguna page after a successful save.
+10. Refresh the user list so that the new user appears.
+
+If the backend returns validation errors, map them to the relevant form fields.
+
+If the request fails due to a server or network error, preserve the entered form data and allow the user to retry.
+
+### C. Cancel Button
+
+When the user clicks **Batal**:
+
+- Return to the Data Pengguna page.
+- Do not submit the form.
+- If the form contains unsaved changes, optionally display a confirmation dialog before discarding them.
+
+## 6. Edit User Logic
+
+Although the screenshot primarily shows the list and add-user form, implement the edit flow because the table contains an Ubah button.
+
+Requirements:
+
+- Reuse the same visual design and validation rules as the add-user form.
+- Populate the form with the selected user's current data.
+- Require valid name, email, and role values.
+- Check email uniqueness while excluding the current user's own email.
+- Do not require a new password for ordinary profile edits.
+- If password changes are supported, handle them separately and hash the new password on the backend.
+- Ensure that only authorized users can edit the selected account.
+- Refresh the user table after a successful update.
+
+## 7. Role-Based Access Control
+
+Implement role permissions using the existing authentication and authorization system.
+
+Suggested permission matrix:
+
+| Feature | Superadmin | Administrator | Kasir |
+|---|---|---|---|
+| View user list | Allowed | Based on existing policy | Denied by default |
+| Search users | Allowed | Based on existing policy | Denied by default |
+| Add user | Allowed | Denied by default | Denied |
+| Edit user | Allowed | Denied by default | Denied |
+| Delete user | Allowed | Denied | Denied |
+
+This is a suggested default policy, not permission to override an existing business rule. Inspect the current application requirements and preserve the established permissions if they differ.
+
+Important security requirements:
+
+- Hide or disable unauthorized UI actions as appropriate.
+- Protect routes on the frontend.
+- Enforce all permissions on the backend.
+- Do not trust role information sent by the client.
+- Prevent privilege escalation.
+- Do not expose administrative operations to the Kasir role.
+
+## 8. Backend and Database Integration
+
+Inspect the existing API and database before implementing endpoints.
+
+If the necessary API endpoints already exist, reuse them.
+
+If the project uses Laravel and these endpoints are missing, implement the required routes, controller methods, validation, authorization policies or middleware, and database interactions following the existing project conventions.
+
+Suggested endpoint design:
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/users` | Retrieve users with optional search and pagination |
+| POST | `/api/users` | Create a new user |
+| GET | `/api/users/{id}` | Retrieve user details |
+| PUT/PATCH | `/api/users/{id}` | Update an existing user |
+| DELETE | `/api/users/{id}` | Delete a user |
+
+Adapt these endpoints to the existing API prefix, route names, and authentication mechanism.
+
+### Backend validation
+
+Validate the request on the server, including:
+
+- Required name.
+- Valid and unique email.
+- Secure password requirements during creation.
+- Valid role assignment.
+- Authorization for every operation.
+- Record existence before updating or deleting.
+
+Use database transactions where necessary.
+
+Return appropriate HTTP status codes, including validation errors and authorization failures.
+
+Do not create or run destructive migrations against an existing database without first understanding the current schema and migration state.
+
+## 9. Frontend Architecture
+
+Keep the code modular and reusable.
+
+Suggested structure, adapted to the existing project:
+
+```text
+src/
+├── components/
+│   ├── layout/
+│   │   ├── Sidebar.jsx
+│   │   └── DashboardLayout.jsx
+│   └── users/
+│       ├── UserTable.jsx
+│       ├── UserForm.jsx
+│       ├── UserSearch.jsx
+│       ├── UserRoleBadge.jsx
+│       └── DeleteUserDialog.jsx
+├── pages/
+│   └── users/
+│       ├── Users.jsx
+│       ├── CreateUser.jsx
+│       └── EditUser.jsx
+├── services/
+│   └── userService.js
+└── ...
+```
+
+Responsibilities:
+
+- `Users.jsx`: page orchestration, data loading, search, and pagination.
+- `UserTable.jsx`: table rendering and row actions.
+- `UserForm.jsx`: reusable create/edit form.
+- `UserSearch.jsx`: search input.
+- `UserRoleBadge.jsx`: consistent role styling.
+- `DeleteUserDialog.jsx`: confirmation and deletion state.
+- `userService.js`: centralized API requests.
+- `Sidebar.jsx`: reusable navigation component; do not duplicate it inside user pages.
+
+Use the existing state management approach. Do not introduce Redux, React Query, or another major dependency unless it is justified by the current architecture.
+
+## 10. UI and UX Requirements
+
+Preserve the attached design:
+
+- Blue sidebar with the existing logo and navigation.
+- Breadcrumb navigation.
+- Page title and subtitle.
+- Blue primary action button.
+- Search field above the table.
+- White table card with the maroon header row.
+- Role badges with distinct colors.
+- Green Ubah button and red Hapus button.
+- White form card with consistent field spacing.
+- Blue Simpan button and neutral Batal button.
+- Consistent typography, borders, spacing, and background colors.
+
+Do not redesign the page unnecessarily. Prioritize functional completeness while preserving the existing visual reference.
+
+Ensure the pages are usable on desktop and remain responsive on smaller screens.
+
+## 11. Testing and Acceptance Criteria
+
+After implementation, run the application and verify the following scenarios.
+
+### User list
+- The list loads successfully from the backend.
+- Search by name works.
+- Search by email works.
+- Empty search results are handled correctly.
+- Pagination works if enabled.
+
+### Create user
+- A valid user can be created.
+- Required-field validation works.
+- Invalid email is rejected.
+- Duplicate email is rejected.
+- Missing password is rejected during creation.
+- Unauthorized role assignments are rejected.
+- The new user appears in the list after saving.
+
+### Edit user
+- Existing data appears in the form.
+- Valid changes are saved.
+- Duplicate email is rejected.
+- An unchanged email is accepted.
+- Editing does not accidentally erase the existing password.
+
+### Delete user
+- Confirmation appears before deletion.
+- Canceling preserves the record.
+- Confirming deletes the record if authorized.
+- Unauthorized deletion is rejected.
+- Protected Superadmin accounts cannot be deleted when required by policy.
+
+### Security and reliability
+- Passwords are securely hashed on the backend.
+- Backend authorization is enforced.
+- API errors are handled correctly.
+- No secrets or passwords are logged.
+- No existing authentication or application functionality is broken.
+
+## 12. Final Instructions
+
+Implement the feature directly in the current project workspace.
+
+Do not stop after generating a plan, explaining the logic, or writing sample snippets.
+
+Inspect the codebase, implement the necessary frontend and backend changes, run the relevant checks, and fix any issues that arise.
+
+At the end, report:
+
+1. Files created or modified.
+2. API endpoints reused or created.
+3. Database changes, if any.
+4. Role permissions implemented.
+5. Tests performed and their results.
+6. Any remaining limitations or manual configuration required.
+
+Do not claim successful database integration or passing tests unless you have actually verified them.

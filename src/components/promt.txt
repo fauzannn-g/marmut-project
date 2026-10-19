@@ -1,0 +1,361 @@
+# Prompt Antigravity — Convert UI Design to React.js Frontend
+
+## Role
+Act as a senior frontend developer specializing in React.js, responsive UI development, reusable components, and pixel-accurate design implementation.
+
+## Objective
+Analyze the attached UI design screenshot and implement the frontend of the application using React.js. Use the screenshot as the primary visual reference and recreate the layouts, colors, typography, spacing, tables, forms, cards, navigation, and modal dialogs as closely as possible.
+
+**Important:** Build a functional frontend, not just a static mockup or a single page.
+
+## 1. Analyze the Reference Design
+Inspect the attached screenshot carefully. It contains multiple screens representing different pages and application states, including:
+
+- Login page and login validation state.
+- Main dashboard with summary cards and information panels.
+- User management page and add-user form.
+- Item category management page.
+- Inventory and stock management page.
+- Add-item form.
+- Service management page and add-service form.
+- Transaction or service-order page.
+- Transaction confirmation or success modal.
+- Transaction report page.
+- Profile page.
+
+Use the screenshot to identify the shared design system and page structure. Treat each screen as a separate page or state within the same application.
+
+If some text or details are too small to read, infer sensible UI labels from the visible context without changing the overall design direction.
+
+## 2. Technology Stack
+Use the following technologies:
+
+- React.js.
+- Vite, if the project already uses Vite.
+- JavaScript with JSX.
+- React Router DOM for page navigation.
+- CSS or the existing styling framework in the project.
+- Lucide React for icons, if needed.
+- Existing dependencies and project conventions whenever possible.
+
+Before making changes, inspect the existing project structure, `package.json`, installed dependencies, routing configuration, and current components.
+
+Do not replace or reinitialize an existing project unnecessarily.
+
+## 3. Required Folder Structure
+
+Organize the application into reusable components and separate page files. Adapt the structure to the existing project if necessary.
+
+```text
+src/
+├── components/
+│   ├── layout/
+│   │   ├── Sidebar.jsx
+│   │   ├── Sidebar.css
+│   │   ├── DashboardLayout.jsx
+│   │   ├── Header.jsx
+│   │   └── MainContent.jsx
+│   ├── common/
+│   │   ├── Button.jsx
+│   │   ├── Card.jsx
+│   │   ├── DataTable.jsx
+│   │   ├── FormInput.jsx
+│   │   ├── StatusBadge.jsx
+│   │   ├── Modal.jsx
+│   │   └── PageHeader.jsx
+│   └── ...
+├── pages/
+│   ├── Login.jsx
+│   ├── Dashboard.jsx
+│   ├── Users.jsx
+│   ├── Categories.jsx
+│   ├── Inventory.jsx
+│   ├── AddItem.jsx
+│   ├── Services.jsx
+│   ├── AddService.jsx
+│   ├── Transactions.jsx
+│   ├── Reports.jsx
+│   └── Profile.jsx
+├── routes/
+│   └── AppRoutes.jsx
+├── assets/
+├── styles/
+│   └── global.css
+├── App.jsx
+└── main.jsx
+```
+
+## 4. Sidebar — Mandatory Requirement
+
+The sidebar must be implemented in a **dedicated, reusable component file** named `Sidebar.jsx`, with its own stylesheet in `Sidebar.css`.
+
+Do not write the sidebar markup repeatedly in every page.
+
+Requirements:
+
+- Follow the sidebar design shown in the reference screenshot.
+- Use the same blue color palette, logo placement, navigation spacing, and typography.
+- Include the appropriate menu items and icons based on the screenshot.
+- Highlight the active menu based on the current route.
+- Support navigation using React Router DOM.
+- Group menu items logically if the screenshot indicates menu sections.
+- Keep the sidebar consistent across all authenticated application pages.
+- Allow future menu items to be added or removed easily.
+- Keep the sidebar independent of individual page content.
+- Use reusable configuration data for menu labels, routes, and icons.
+- Ensure the sidebar does not overlap or obscure the main content.
+- Support responsive behavior on smaller screens.
+
+Example implementation approach:
+
+```jsx
+// components/layout/Sidebar.jsx
+
+import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Users,
+  Package,
+  Tags,
+  Wrench,
+  ClipboardList,
+  FileText,
+  UserCircle,
+} from "lucide-react";
+import "./Sidebar.css";
+
+const menuItems = [
+  {
+    label: "Dashboard",
+    path: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    label: "Data Pengguna",
+    path: "/users",
+    icon: Users,
+  },
+  {
+    label: "Kategori Barang",
+    path: "/categories",
+    icon: Tags,
+  },
+  {
+    label: "Inventaris & Stok",
+    path: "/inventory",
+    icon: Package,
+  },
+  {
+    label: "Jasa Servis",
+    path: "/services",
+    icon: Wrench,
+  },
+  {
+    label: "Transaksi",
+    path: "/transactions",
+    icon: ClipboardList,
+  },
+  {
+    label: "Laporan",
+    path: "/reports",
+    icon: FileText,
+  },
+  {
+    label: "Profil Saya",
+    path: "/profile",
+    icon: UserCircle,
+  },
+];
+
+export default function Sidebar() {
+  return (
+    <aside className="sidebar">
+      {/* Add logo and application branding here */}
+
+      <nav className="sidebar-nav">
+        {menuItems.map(({ label, path, icon: Icon }) => (
+          <NavLink
+            key={path}
+            to={path}
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+          >
+            <Icon size={18} />
+            <span>{label}</span>
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
+  );
+}
+```
+
+Treat this code as a starting point, not a requirement to use the exact labels or menu items. Adjust the menu according to the screenshot and the existing application requirements.
+
+## 5. Shared Dashboard Layout
+
+Create a reusable `DashboardLayout.jsx` component that imports and renders the sidebar, header, and page content.
+
+Example:
+
+```jsx
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+
+export default function DashboardLayout({ children }) {
+  return (
+    <div className="dashboard-layout">
+      <Sidebar />
+
+      <div className="dashboard-main">
+        <Header />
+
+        <main className="dashboard-content">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
+```
+
+All authenticated pages must reuse this layout.
+
+The login page should have its own layout without the dashboard sidebar.
+
+## 6. Design System
+
+Follow the reference screenshot as closely as possible.
+
+### Colors
+- Primary blue: use a color close to `#00699B` or the closest matching blue in the reference.
+- Active navigation: use a contrasting blue or lighter blue background, based on the screenshot.
+- Main background: light gray or off-white.
+- Content surfaces: white.
+- Primary actions: blue.
+- Destructive actions: red.
+- Success states: green.
+- Warning states: yellow or amber.
+- Text: dark gray or near-black.
+- Borders: subtle light gray.
+
+Adjust the color values after inspecting the screenshot.
+
+### Layout
+- Keep a fixed-width or appropriately responsive sidebar on desktop.
+- Let the main content occupy the remaining available width.
+- Use consistent page padding and spacing.
+- Align cards, tables, and form containers properly.
+- Use subtle borders, small corner radii, and restrained shadows.
+- Maintain a clean administrative dashboard appearance.
+
+### Typography
+- Use a consistent, readable sans-serif font.
+- Reproduce the hierarchy between page titles, section headings, labels, and supporting text.
+- Keep font sizes and font weights consistent across pages.
+
+### Reference Fidelity
+Do not introduce a completely different visual style.
+Avoid unnecessary gradients, oversized cards, excessive rounded corners, excessive whitespace, or decorative elements that do not exist in the reference.
+
+## 7. Implement Each Page
+
+### Login
+Recreate the split-screen login page, including branding, welcome text, login form, and validation state.
+
+### Dashboard
+Recreate the summary KPI cards, information panels, recent activity or transaction lists, and other visible dashboard elements.
+
+### User Management
+Implement the user data table, search field, action buttons, status indicators, and add-user form.
+
+### Category Management
+Implement the category table and add-category form.
+
+### Inventory & Stock
+Implement the inventory table, search/filter controls, stock information, status badges, and action buttons.
+
+### Add Item
+Create the item form with appropriate inputs, dropdowns, numeric fields, and action buttons.
+
+### Service Management
+Implement the service list, price information, action buttons, and add-service form.
+
+### Transactions
+Recreate the transaction or service-order interface, including item/service selection, quantities, totals, and confirmation dialogs where applicable.
+
+### Reports
+Create the report page with summary cards, date filters, transaction data, and report actions visible in the reference.
+
+### Profile
+Create a profile page with user information, editable fields, and profile-related actions.
+
+Use shared components for repeated patterns instead of duplicating code.
+
+## 8. Functional Requirements
+
+The frontend should have working interactions, even if no backend API is available yet.
+
+Implement:
+
+- Navigation between pages.
+- Active sidebar states.
+- Search and basic filtering for tables.
+- Form input handling and basic validation.
+- Add, edit, and delete interactions using mock data where appropriate.
+- Confirmation dialogs for destructive actions.
+- Success and error feedback.
+- Dropdown interactions.
+- Transaction total calculations if relevant.
+- Login form validation.
+- Responsive layouts.
+
+Use React state for local interactions. Use mock data when backend integration is not available.
+
+Do not claim that authentication, data persistence, or CRUD operations are connected to a real backend unless an actual API is present and implemented.
+
+## 9. Code Quality Requirements
+
+- Keep components modular and reusable.
+- Separate layout components from page components.
+- Separate the sidebar into its own file.
+- Keep CSS organized and avoid unnecessary duplication.
+- Use semantic HTML.
+- Avoid creating one enormous JSX file containing the entire application.
+- Avoid inline styles for large styling blocks.
+- Do not introduce unnecessary dependencies.
+- Do not remove existing project functionality without a clear reason.
+- Keep the implementation easy to maintain and extend.
+
+## 10. Execution Workflow
+
+Follow these steps in order:
+
+1. Inspect the existing project and identify its current structure.
+2. Analyze the attached screenshot and determine the common layout and visual design system.
+3. Implement the shared styling and global layout.
+4. Create the reusable `Sidebar.jsx` and `Sidebar.css`.
+5. Create `DashboardLayout.jsx` and the shared header.
+6. Configure routing for all required pages.
+7. Implement the pages and reusable UI components.
+8. Add functional interactions and mock data.
+9. Run the project using its existing development scripts.
+10. Check for compilation errors, missing imports, broken routes, and console errors.
+11. Fix any issues discovered during testing.
+12. Verify that the sidebar is consistently rendered and the active menu updates correctly across routes.
+13. Compare the rendered UI against the reference screenshot and refine spacing, colors, dimensions, and typography.
+
+## 11. Final Deliverables
+
+At the end of the implementation:
+
+- All frontend files must be created or updated directly in the existing project.
+- The sidebar must be available as a reusable component imported from `components/layout/Sidebar.jsx`.
+- Each page must be accessible through its configured route.
+- The application must run using the appropriate existing development command.
+- Provide a concise summary of files created or modified.
+- Explain how to import and reuse the sidebar and dashboard layout on a new page.
+- Report any remaining issues honestly.
+
+**Start by inspecting the project and the attached reference screenshot. Then implement the application directly in the workspace. Do not stop after producing a plan or sample code.**

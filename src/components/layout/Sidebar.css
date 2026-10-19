@@ -1,0 +1,148 @@
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 16px 18px;
+  color: #ffffff;
+  background: #08669b;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 10px 35px;
+}
+
+.sidebar-brand > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sidebar-brand strong {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sidebar-brand span {
+  font-size: 12px;
+  color: #c8e2f1;
+}
+
+.sidebar-section-label {
+  margin: 0 10px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #a9d0e6;
+  text-transform: uppercase;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 13px;
+  border-radius: 8px;
+  color: #e2eff7;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.sidebar-link.active {
+  color: #ffffff;
+  font-weight: 600;
+  background: #0c7bb5;
+  box-shadow: inset 3px 0 0 #ffffff;
+}
+
+.sidebar-link svg {
+  flex-shrink: 0;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-bottom .sidebar-link {
+  color: #c8e2f1;
+}
+
+.sidebar-footer-text {
+  margin: 16px 10px 0;
+  color: #b6d9eb;
+  font-size: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 68px;
+    min-width: 68px;
+    padding: 20px 8px;
+  }
+
+  .sidebar-brand {
+    justify-content: center;
+    padding: 4px 0 30px;
+  }
+
+  .sidebar-brand > div,
+  .sidebar-section-label,
+  .sidebar-link span,
+  .sidebar-footer-text {
+    display: none;
+  }
+
+  .sidebar-link {
+    justify-content: center;
+    padding: 13px 5px;
+  }
+}
+
+/* Tombol logout di sidebar */
+.sidebar-logout-btn {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  color: #ffc5c5 !important;
+  margin-top: 4px;
+}
+
+.sidebar-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #fca5a5 !important;
+}
+

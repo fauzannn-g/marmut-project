@@ -1,0 +1,68 @@
+.cat-summary-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.cat-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: #ffffff;
+  border: 1px solid #e8edf4;
+  border-radius: 12px;
+  min-width: 180px;
+}
+
+.cat-summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #e5f4fd;
+  color: #0877b3;
+}
+
+.cat-summary-icon.green-icon {
+  background: #e2f8ee;
+  color: #14966b;
+}
+
+.cat-summary-card p {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.cat-summary-card strong {
+  font-size: 22px;
+  font-weight: 700;
+  color: #172b4d;
+}
+
+.item-count-badge {
+  display: inline-flex;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #e5f4fd;
+  color: #0877b3;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}

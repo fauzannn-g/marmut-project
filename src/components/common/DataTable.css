@@ -1,0 +1,178 @@
+.datatable-card {
+  background: #ffffff;
+  border: 1px solid #e8edf4;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.03);
+  overflow: hidden;
+}
+
+.datatable-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #edf0f5;
+  flex-wrap: wrap;
+}
+
+.datatable-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  max-width: 380px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  color: #94a3b8;
+}
+
+.datatable-search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  color: #334155;
+  background: transparent;
+}
+
+.datatable-search input::placeholder {
+  color: #94a3b8;
+}
+
+.datatable-tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 13px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.datatable-tool-btn:hover {
+  background: #f8fafc;
+}
+
+.datatable-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.datatable {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.datatable th {
+  padding: 13px 16px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.datatable td {
+  padding: 14px 16px;
+  border-top: 1px solid #edf0f5;
+  font-size: 13px;
+  color: #475569;
+}
+
+.datatable tbody tr:hover {
+  background: #fafbfd;
+}
+
+.datatable-empty {
+  text-align: center !important;
+  vertical-align: middle;
+  padding: 60px 20px !important;
+}
+
+.datatable-empty-icon {
+  display: block;
+  margin-bottom: 12px;
+  color: #94a3b8;
+}
+
+.datatable-empty strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #334155;
+  font-size: 14px;
+}
+
+.datatable-empty span {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.datatable-footer {
+  padding: 14px 20px;
+  border-top: 1px solid #edf0f5;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.datatable-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.edit-btn {
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.edit-btn:hover {
+  background: #dbeafe;
+}
+
+.delete-btn {
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+  color: #dc2626;
+}
+
+.delete-btn:hover {
+  background: #fee2e2;
+}
+
+@media (max-width: 700px) {
+  .datatable-search {
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .datatable-toolbar {
+    padding: 12px 14px;
+  }
+}
